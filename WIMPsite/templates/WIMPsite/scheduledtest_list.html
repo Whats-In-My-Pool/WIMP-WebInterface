@@ -1,0 +1,17 @@
+{% extends "WIMPsite/base.html" %}
+
+{% block content %}
+    <h1>Scheduled Tests</h1>
+    {% if scheduledtest_list_list %}
+        <ul>
+            {% for tests in scheduledtest_list %}
+                <li>
+                    {{ test.name }} {{ test.date_created }} {{ test.last_run }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tests have been added yet</p>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "WIMPsite/base.html" %}
+
+{% block content %}
+    <h1>Test Strips</h1>
+    {% if teststrip_list %}
+        <ul>
+            {% for teststrip in teststrip_list %}
+                <li>
+                    {{ teststrip.name }} {{ teststrip.date_created }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No strips have been added yet</p>
+    {% endif %}
+
+{% endblock %}

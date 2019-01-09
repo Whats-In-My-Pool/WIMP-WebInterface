@@ -11,7 +11,7 @@ class TestStrip(models.Model):
 class ChemicalTest(models.Model):
     name = models.CharField(max_length=100)
     unit = models.CharField(max_length=30)
-    test = models.ForeignKey(TestStrip, related_name='test_strip')
+    test = models.ForeignKey(TestStrip, related_name='strip', on_delete=models.CASCADE)
 
 
 class Color(models.Model):
@@ -22,5 +22,12 @@ class Color(models.Model):
 
     text = models.CharField(max_length=30)
 
-    test = models.ForeignKey(ChemicalTest, related_name='chemical_test')
+    test = models.ForeignKey(ChemicalTest, related_name='chemical_test', on_delete=models.CASCADE)
+
+
+class ScheduledTest(models.Model):
+    name = models.CharField(max_length=100)
+    test_strip = models.ForeignKey(TestStrip, related_name='test', on_delete=models.CASCADE)
+    last_run = models.DateTimeField()
+    frequency = models.IntegerField()
 

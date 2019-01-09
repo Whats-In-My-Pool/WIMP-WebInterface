@@ -1,0 +1,37 @@
+.sidebar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+}
+
+.sidebar-option{
+  float: left;
+}
+
+.sidebar-option .sidebar-a {
+    display: block;
+    color: #000;
+    background-color: lightgray;
+    padding: 8px;
+    text-decoration: none;
+    width: 300px;
+}
+
+/* Change the link color on hover */
+.sidebar-option .sidebar-a:hover {
+    width: 300px;
+    background-color: #8b8b8b;
+    color: white;
+}
+
+.navbar {
+    background-color: #555;
+}
+
+.navbar-brand {
+    color: white;
+    font-size: 25px;
+}
+
