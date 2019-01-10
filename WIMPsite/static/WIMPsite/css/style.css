@@ -2,8 +2,8 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 200px;
     background-color: #f1f1f1;
+    width: 100px;
 }
 
 .sidebar-option{
@@ -16,12 +16,12 @@
     background-color: lightgray;
     padding: 8px;
     text-decoration: none;
-    width: 300px;
+    width: 100px;
 }
 
 /* Change the link color on hover */
 .sidebar-option .sidebar-a:hover {
-    width: 300px;
+    width: 100px;
     background-color: #8b8b8b;
     color: white;
 }
@@ -35,3 +35,6 @@
     font-size: 25px;
 }
 
+#side {
+    color: #555555;
+}
