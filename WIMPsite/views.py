@@ -12,7 +12,8 @@ class Home(View):
         test_profile_count = TestStrip.objects.count()
 
         context = {
-            "test_profile_count": test_profile_count
+            "test_profile_count": test_profile_count,
+            "active": "Home"
         }
 
         return render(request, 'WIMPsite/home.html', context=context)
@@ -21,6 +22,17 @@ class Home(View):
 class TestStripList(generic.ListView):
     model = TestStrip
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "Testing Strips"
+        return context
+
+
 class SceduledTestList(generic.ListView):
     model = ScheduledTest
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "Scheduled Tests"
+        return context
 

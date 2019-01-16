@@ -1,44 +1,52 @@
 <!DOCTYPE html>
 {% load static %}
-
+{% load navbar %}
 <html lang="en">
 <head>
     <link rel="shortcut icon" type="image/png" href="{% static 'WIMPsite/img/icon.png' %}"/>
     <meta charset="UTF-8">
     {% block title %}<title>WIMP</title>{% endblock %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <!-- Add additional CSS in static file -->
+
     {% load static %}
-    <link rel="stylesheet" href="{% static 'WIMPsite/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'WIMPsite/css/bootstrap.css' %}">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 </head>
 <body>
-<nav class="navbar">
-    <div>
-        <div class="navbar-header">
-            <img src="{% static 'WIMPsite/img/icon.png' %}" alt="wimp" height="50" width="50">
-            <h1 class="navbar-brand">What's in my Pool?</h1>
-        </div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a href="#" class="navbar-left"><img src="{% static 'WIMPsite/img/icon.png' %}" height="30px" alt="sed"></a>
+    <a class="navbar-brand" href="#">WIMP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+            aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+            {% autoescape off %}{% get_navbar current_page|safe %}{% endautoescape %}
+        </ul>
     </div>
 </nav>
-<div>
-    <div class="row">
-        <div class="col-sm-1" id="side">
-            {% block sidebar %}
-                <ul class="sidebar-nav">
-                    <li class="sidebar-option"><a class="sidebar-a" href="{% url 'Home' %}">Home</a></li>
-                    <li class="sidebar-option"><a class="sidebar-a" href="{% url 'Testing Strips' %}">Test Strips</a>
-                    </li>
-                    <li class="sidebar-option"><a class="sidebar-a" href="{% url 'Scheduled Tests' %}"> Scheduled
-                        Tests</a></li>
-                </ul>
-            {% endblock %}
-        </div>
-        <div class="col-sm-11 ">
-            {% block content %}{% endblock %}
-        </div>
-    </div>
+
+<div class="container">
+    <h1>{% block header %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
 </div>
 </body>
 </html>
