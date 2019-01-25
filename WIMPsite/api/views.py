@@ -27,12 +27,9 @@ class TestAPI(View):
         if action == "report_test":
             if "model" in post:
                 if post["model"] == "WIMPsite.scheduledtest":
-                    test = ScheduledTest.objects.get(pk=post["pj"])
+                    test = ScheduledTest.objects.get(pk=post["pk"])
                     test.last_run(post["last_run"])
-
-
-
-
+                    test.save()
 
 
 class SettingsAPI(View):

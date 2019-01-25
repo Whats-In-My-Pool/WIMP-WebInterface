@@ -1,17 +1,33 @@
 {% extends "WIMPsite/base.html" %}
 
+{% block header %}
+    Scheduled Tests
+{% endblock %}
 {% block content %}
-    <h1>Scheduled Tests</h1>
-    {% if scheduledtest_list_list %}
-        <ul>
-            {% for tests in scheduledtest_list %}
-                <li>
-                    {{ test.name }} {{ test.date_created }} {{ test.last_run }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No tests have been added yet</p>
-    {% endif %}
+    <table id="scheduled_tests _table" class="table table-hover link-table">
+        <thead>
+        <tr class="table-primary">
+            <th>Test Name</th>
+            <th>Test Strip</th>
+            <th>Last Run</th>
+            <th>Frequency</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for test in scheduledtest_list %}
+            <tr class="table-secondary">
+                <td>{{ test.name }} </td>
+                <td>{{ test.test_strip.name }} </td>
+                <td>{{ test.last_run }} </td>
+                <td>{{ test.frequency }} {{ test.get_scale_display }}(s)</td>
+            </tr>
+        {% endfor %}
 
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function () {
+            $('#scheduled_tests_table').DataTable();
+        });
+    </script>
 {% endblock %}

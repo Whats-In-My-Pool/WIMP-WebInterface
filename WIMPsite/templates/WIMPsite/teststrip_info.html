@@ -1,0 +1,37 @@
+{% extends "WIMPsite/base.html" %}
+
+{% block header %}
+    {{ strip.name }}
+{% endblock %}
+{% block content %}
+    <h2>Chemical Tests</h2>
+    <table id="table" class="table table-hover link-table">
+        <thead>
+        <tr class="table-primary">
+            <th>Test</th>
+            <th>Unit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for test in tests %}
+            <tr class="table-secondary">
+                <td><a class="text-primary" href="{% url "Test Info" id=test.pk %}">{{ test.name }} </a></td>
+                <td>{{ test.unit }} </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <form action="{% url 'Test Strip Info' strip.id %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-primary" type="submit" value="Add Test">
+
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable();
+            });
+        </script>
+
+{% endblock %}

@@ -1,17 +1,39 @@
 {% extends "WIMPsite/base.html" %}
-
+{% block header %}
+    Testing Strips
+{% endblock %}
 {% block content %}
-    <h1>Test Strips</h1>
-    {% if teststrip_list %}
-        <ul>
-            {% for teststrip in teststrip_list %}
-                <li>
-                    {{ teststrip.name }} {{ teststrip.date_created }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No strips have been added yet</p>
-    {% endif %}
+
+
+    <table id="table" class="table table-hover link-table">
+        <thead>
+        <tr class="table-primary">
+            <th>Test</th>
+            <th>Data created</th>
+            <th>Test Count</th>
+        </tr>
+        </thead>
+        <tbody class="bg-dark">
+        {% for strip in teststrip_list %}
+            <tr class="table-secondary">
+                <td><a class="text-primary" href="{% url "Test Strip Info" id=strip.pk %}">{{ strip.name }} </a></td>
+                <td>{{ strip.date_created }} </td>
+                <td>{{ strip.tests.all.count }}</td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <form action="{% url 'Test Strip Form' %}">
+        <input class="btn btn-primary" type="submit" value="Add Strip"/>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable();
+        });
+    </script>
 
 {% endblock %}
