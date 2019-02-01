@@ -1,0 +1,17 @@
+POST http://localhost:8000/WIMPSite/api/test/report_test/
+Content-Type: application/json
+#make this params like u goober
+{
+  "scheduled_test_pk": 3,
+  "time_stamp": 1548790197,
+  "results": [
+    {
+      "pk": 14,
+      "r": 55,
+      "g": 55,
+      "b": 55
+    }
+  ]
+}
+
+###
