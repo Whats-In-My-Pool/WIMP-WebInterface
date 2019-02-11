@@ -25,7 +25,9 @@ SECRET_KEY = '11s+ot0d10l@(8^c8uyf05g8vp27=i$bovork+7dhfh46v2%--'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["wimpsite.ahines.net", "18.223.68.182", "127.0.0.1", "127.0.1.1"]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 # Application definition
