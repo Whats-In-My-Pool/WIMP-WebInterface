@@ -73,3 +73,12 @@ class TestResult(models.Model):
                 color_match = color
 
         return color_match
+
+
+class TempResult(models.Model):
+    time = models.DateTimeField(auto_now=True)
+    temp = models.FloatField()
+
+    @property
+    def temp_to_f(self):
+        return (self.temp * 1.8) + 32

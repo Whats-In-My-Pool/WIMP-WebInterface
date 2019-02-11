@@ -12,7 +12,7 @@ class TestAPI(View):
 
         if action == "scheduled_tests":
             j = json.loads(serializers.serialize("json", ScheduledTest.objects.all()))
-        if action == "test_strip":
+        elif action == "test_strip":
             if "pk" in get:
                 strip = TestStrip.objects.get(pk=get["pk"])
 
@@ -45,8 +45,14 @@ class TestAPI(View):
                                               time_run=test_run.last_run)
 
                 return HttpResponse("Success")
+        elif action == "report_temp":
+            if "temp" in body:
+                TempResult.objects.create(temp=body["temp"])
+
+                return HttpResponse("Success")
 
         return HttpResponse("Fail")
+
 
 class SettingsAPI(View):
     def get(self, request):
