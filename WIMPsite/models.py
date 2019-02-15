@@ -19,6 +19,9 @@ class ChemicalTest(models.Model):
     region_x2 = models.IntegerField()
     region_y2 = models.IntegerField()
 
+    def __str__(self):
+        return "{} ({})".format(self.name, self.id)
+
 
 class Color(models.Model):
     unit_value = models.FloatField()
@@ -51,6 +54,9 @@ class ScheduledTest(models.Model):
     last_run = models.DateTimeField()
     frequency = models.IntegerField()
     scale = models.CharField(max_length=1, choices=time_scale)
+
+    def __str__(self):
+        return "{} ({})".format(self.name, self.id)
 
 
 class TestResult(models.Model):
