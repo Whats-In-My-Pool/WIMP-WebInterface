@@ -41,6 +41,9 @@ class Color(models.Model):
 
         return "#{}{}{}".format(r, g, b)
 
+    def __str__(self):
+        return "Color {} ({} {} {}) ({})".format(self.text, self.r, self.g, self.b, self.id)
+
 
 class ScheduledTest(models.Model):
     time_scale = (
