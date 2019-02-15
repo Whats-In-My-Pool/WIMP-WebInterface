@@ -12,7 +12,7 @@ class TestAPI(View):
 
         if action == "scheduled_tests":
             j = json.loads(serializers.serialize("json", ScheduledTest.objects.all()))
-        if action == "test_strip":
+        elif action == "test_strip":
             if "pk" in get:
                 strip = TestStrip.objects.get(pk=get["pk"])
 
