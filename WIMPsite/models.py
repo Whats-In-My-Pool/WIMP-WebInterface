@@ -14,6 +14,10 @@ class ChemicalTest(models.Model):
     name = models.CharField(max_length=100)
     unit = models.CharField(max_length=30)
     test = models.ForeignKey(TestStrip, related_name='tests', on_delete=models.CASCADE)
+    region_x1 = models.IntegerField()
+    region_y1 = models.IntegerField()
+    region_x2 = models.IntegerField()
+    region_y2 = models.IntegerField()
 
 
 class Color(models.Model):
