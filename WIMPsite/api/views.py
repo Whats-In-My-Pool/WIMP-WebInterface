@@ -50,6 +50,18 @@ class TestAPI(View):
                 TempResult.objects.create(temp=body["temp"])
 
                 return HttpResponse("Success")
+        elif action == "add_test":
+            if "strip_id" in body:
+                strip = TestStrip.objects.get(pk=body["strip_id"])
+
+                chemical_test = ChemicalTest.objects.create(unit=body["unit"], name=body["strip_name"], test=strip,
+                                                            region_y2=0, region_y1=0, region_x2=0, region_x1=0)
+
+                for color in body["colors"]:
+                    Color.objects.create(unit_value=color["unit_value"], text=color["text"], r=color["r"], g=color["g"],
+                                         b=color["b"], test=chemical_test)
+
+                return HttpResponse("Success")
 
         return HttpResponse("Fail")
 
