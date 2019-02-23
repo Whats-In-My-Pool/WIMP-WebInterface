@@ -6,6 +6,7 @@ import datetime
 
 import json
 
+
 class TestAPI(View):
     def get(self, request, action):
         get = request.GET
@@ -18,7 +19,7 @@ class TestAPI(View):
 
                 j = json.loads(serializers.serialize("json", strip.tests.all()))
             else:
-                j = []
+                j = json.loads(serializers.serialize("json", TestStrip.objects.all()))
         else:
             j = {"error": "{} not found".format(action)}
 
@@ -62,6 +63,11 @@ class TestAPI(View):
                                          b=color["b"], test=chemical_test)
 
                 return HttpResponse("Success")
+        elif action == "add_strip":
+            if "strip_name" in body:
+                strip = TestStrip.objects.create(name=body["strip_name"])
+
+                return JsonResponse({"id": strip.id})
 
         return HttpResponse("Fail")
 
