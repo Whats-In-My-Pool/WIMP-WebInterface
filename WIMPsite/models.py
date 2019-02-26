@@ -1,6 +1,7 @@
 from math import sqrt
 
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
@@ -41,6 +42,12 @@ class Color(models.Model):
 
         return "#{}{}{}".format(r, g, b)
 
+    @property
+    def shifted_color(self):
+        shift = getattr(settings, "COLOR_SHIFT", (0, 0, 0))
+
+        return self.r - shift[0], self.g - shift[1], self.b - shift[2]
+
     def __str__(self):
         return "Color {} ({} {} {}) ({})".format(self.text, self.r, self.g, self.b, self.id)
 
@@ -79,7 +86,8 @@ class TestResult(models.Model):
         color_match = None
 
         for color in test.colors.all():
-            distance = sqrt((color.r - r) ** 2 + (color.g - g) ** 2 + (color.b - b) ** 2)
+            rgb = color.shifted_color
+            distance = sqrt((rgb[0] - r) ** 2 + (rgb[1] - g) ** 2 + (rgb[2] - b) ** 2)
 
             if distance < min_distance:
                 min_distance = distance

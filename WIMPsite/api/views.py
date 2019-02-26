@@ -73,6 +73,6 @@ class TestAPI(View):
 
 
 class SettingsAPI(View):
-    def get(self, request):
+    def get(self, request, action):
         get = request.GET
 
