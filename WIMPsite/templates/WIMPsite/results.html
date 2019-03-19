@@ -1,0 +1,15 @@
+{% extends "WIMPsite/base.html" %}
+
+{% block header %}
+    Results
+{% endblock %}
+{% block content %}
+    {% for strip in strips %}
+        {% if strip.plots %}
+            <h2> {{ strip.strip.name }}</h2>
+            {% for plot in strip.plots %}
+                <div class="col-md-12">{{ plot|safe }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

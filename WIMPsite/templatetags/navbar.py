@@ -6,7 +6,8 @@ register = template.Library()
 navbar_options = [
     ("Home", reverse("Home")),
     ("Testing Strips", reverse("Testing Strips")),
-    ("Scheduled Tests", reverse("Scheduled Tests"))
+    ("Scheduled Tests", reverse("Scheduled Tests")),
+    ("Test Results", reverse("Graph Results")),
 ]
 
 option_format = '<li class="nav-item{}"> <a class="nav-link" href="{}">{} </a> </li>'

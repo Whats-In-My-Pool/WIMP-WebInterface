@@ -4,7 +4,9 @@ from django.views.generic import View
 from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
+
 from WIMPsite.forms import TestStripForm, ChemicalTestForm, ColorForm
+from WIMPsite.plot import plot_graph
 
 
 # Create your views here.
@@ -117,3 +119,38 @@ class TestStripInfo(View):
             return redirect(reverse('Test Strip Info', kwargs={"id": id}))
         else:
             return HttpResponse("error")
+
+
+class GraphResultView(View):
+    def get(self, request):
+
+        strip_results = []
+
+        for test_strip in TestStrip.objects.all():
+            plots = []
+            tests = test_strip.tests.all()
+
+            for test in tests:
+                x = []
+                y = []
+                for result in test.results.all():
+                    x.append(result.time_run.strftime("%y-%m-%d %T"))
+                    y.append(result.color_match.unit_value)
+
+                plot = plot_graph(x, y, test.name)
+
+                plots.append(plot)
+
+            strip_ctx = {
+                "strip": test_strip,
+                "plots": plots
+            }
+
+            strip_results.append(strip_ctx)
+
+        context = {
+            "strips": strip_results,
+            "active": "Test Results"
+        }
+
+        return render(request, "WIMPsite/results.html", context=context)
