@@ -2,6 +2,8 @@ from django.views.generic import View
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from WIMPsite.models import *
+from django.utils import timezone
+import pytz
 import datetime
 
 import json
@@ -32,7 +34,8 @@ class TestAPI(View):
         if action == "report_test":
             if "scheduled_test_pk" in body:
                 test_run = ScheduledTest.objects.get(pk=body["scheduled_test_pk"])
-                test_run.last_run = datetime.datetime.fromtimestamp(body["time_stamp"])
+                date = datetime.datetime.fromtimestamp(body["time_stamp"])
+                test_run.last_run = date.now(tz=pytz.UTC)
                 test_run.save()
 
                 for result in body["results"]:
