@@ -1,3 +1,4 @@
+from django.db.models import Max
 from django.shortcuts import render, reverse, redirect, HttpResponse
 from WIMPsite.models import *
 from django.views.generic import View
@@ -13,13 +14,20 @@ from WIMPsite.plot import plot_graph
 class Home(View):
 
     def get(self, request):
+        latest_test = ScheduledTest.objects.filter(current_test=True).latest('last_run')
+        context = {"active": "Home"}
+        if latest_test.last_run is None:
+            context["results_not_found"] = True
+        else:
+            results = []
 
-        test_profile_count = TestStrip.objects.count()
+            for test in latest_test.test_strip.tests.all():
+                result = test.results.latest('time_run')
 
-        context = {
-            "test_profile_count": test_profile_count,
-            "active": "Home"
-        }
+                results.append(result)
+
+            context["results"] = results
+            context["test_run"] = latest_test.last_run.strftime("%A %B %d at %_I:%M %p")
 
         return render(request, 'WIMPsite/home.html', context=context)
 
@@ -103,22 +111,29 @@ class TestStripInfo(View):
 
         tests = strip.tests.all()
 
-        form = ChemicalTestForm(initial={"test": strip})
-
         context = {"tests": tests,
-                   "strip": strip,
-                   "form": form}
+                   "strip": strip}
 
         return render(request, "WIMPsite/teststrip_info.html", context=context)
 
     def post(self, request, id):
         post = request.POST
-        form = ChemicalTestForm(post)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('Test Strip Info', kwargs={"id": id}))
+
+        current_test = ScheduledTest.objects.filter(current_test=True).all()
+
+        for test in current_test:
+            test.current_test = False
+            test.save()
+
+        if not ScheduledTest.objects.filter(test_strip_id=id).exists():
+            ScheduledTest.objects.create(test_strip_id=id, frequency=7, scale="d", current_test=True)
         else:
-            return HttpResponse("error")
+            test = ScheduledTest.objects.get(test_strip_id=id)
+            test.current_test = True
+            test.save()
+
+        return redirect(reverse('Test Strip Info', kwargs={"id": id}))
+
 
 
 class GraphResultView(View):

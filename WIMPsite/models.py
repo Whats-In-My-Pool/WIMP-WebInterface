@@ -10,6 +10,18 @@ class TestStrip(models.Model):
     name = models.CharField(max_length=100)
     date_created = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
+    @property
+    def is_current_test(self):
+        count = ScheduledTest.objects.filter(test_strip_id=self.id, current_test=True).count()
+
+        if count:
+            return True
+        else:
+            return False
+
 
 class ChemicalTest(models.Model):
     name = models.CharField(max_length=100)
@@ -58,9 +70,10 @@ class ScheduledTest(models.Model):
 
     name = models.CharField(max_length=100)
     test_strip = models.ForeignKey(TestStrip, related_name='strip', on_delete=models.CASCADE)
-    last_run = models.DateTimeField()
+    last_run = models.DateTimeField(null=True)
     frequency = models.IntegerField()
     scale = models.CharField(max_length=1, choices=time_scale)
+    current_test = models.BooleanField()
 
     def __str__(self):
         return "{} ({})".format(self.name, self.id)

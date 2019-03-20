@@ -13,7 +13,7 @@ class TestAPI(View):
         get = request.GET
 
         if action == "scheduled_tests":
-            j = json.loads(serializers.serialize("json", ScheduledTest.objects.all()))
+            j = json.loads(serializers.serialize("json", ScheduledTest.objects.filter(current_test=True).all()))
         elif action == "test_strip":
             if "pk" in get:
                 strip = TestStrip.objects.get(pk=get["pk"])

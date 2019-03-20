@@ -1,7 +1,7 @@
 {% extends "WIMPsite/base.html" %}
 
 {% block header %}
-    {{ strip.name }}
+    {{ strip.name }} {% if strip.is_current_test %} (Current) {% endif %}
 {% endblock %}
 {% block content %}
     <h2>Chemical Tests</h2>
@@ -23,15 +23,18 @@
         </tbody>
     </table>
 
+    {% if not strip.is_current_test %}
     <form action="{% url 'Test Strip Info' strip.id %}" method="post">
         {% csrf_token %}
-        {{ form }}
-        <input class="btn btn-primary" type="submit" value="Add Test">
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" value="Set as Current Test">
+    </form>
 
         <script>
             $(document).ready(function () {
                 $('#table').DataTable();
             });
         </script>
+    {% endif %}
 
 {% endblock %}

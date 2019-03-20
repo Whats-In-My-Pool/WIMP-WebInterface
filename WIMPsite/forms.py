@@ -1,5 +1,5 @@
-from django.forms import ModelForm, Textarea, TextInput, HiddenInput
-from WIMPsite.models import TestStrip, ChemicalTest, Color
+from django.forms import Form, ModelForm, Textarea, TextInput, HiddenInput, ModelChoiceField
+from WIMPsite.models import TestStrip, ChemicalTest, Color, ScheduledTest
 
 
 def __all__():
