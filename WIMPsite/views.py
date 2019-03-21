@@ -6,7 +6,7 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 
-from WIMPsite.forms import TestStripForm, ChemicalTestForm, ColorForm
+from WIMPsite.forms import TestStripForm, ColorForm
 from WIMPsite.plot import plot_graph
 
 
@@ -14,11 +14,10 @@ from WIMPsite.plot import plot_graph
 class Home(View):
 
     def get(self, request):
-        latest_test = ScheduledTest.objects.filter(current_test=True).latest('last_run')
         context = {"active": "Home"}
-        if latest_test.last_run is None:
-            context["results_not_found"] = True
-        else:
+        try:
+            latest_test = ScheduledTest.objects.filter(current_test=True).latest('last_run')
+
             results = []
 
             for test in latest_test.test_strip.tests.all():
@@ -28,6 +27,8 @@ class Home(View):
 
             context["results"] = results
             context["test_run"] = latest_test.last_run.strftime("%A %B %d at %_I:%M %p")
+        except (AttributeError, TestResult.DoesNotExist):
+            context["results_not_found"] = True
 
         return render(request, 'WIMPsite/home.html', context=context)
 
