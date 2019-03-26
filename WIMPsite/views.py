@@ -1,10 +1,11 @@
-from django.db.models import Max
 from django.shortcuts import render, reverse, redirect, HttpResponse
 from WIMPsite.models import *
 from django.views.generic import View
 from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
+from django.conf import settings
+import pytz
 
 from WIMPsite.forms import TestStripForm, ColorForm
 from WIMPsite.plot import plot_graph
@@ -26,7 +27,10 @@ class Home(View):
                 results.append(result)
 
             context["results"] = results
-            context["test_run"] = latest_test.last_run.strftime("%A %B %d at %_I:%M %p")
+            time = latest_test.last_run
+            local_tz = pytz.timezone(getattr(settings, "TIMEZONE", "America/Chicago"))
+            time = time.astimezone(local_tz)
+            context["test_run"] = time.strftime("%A %B %d at %_I:%M %p")
         except (AttributeError, TestResult.DoesNotExist):
             context["results_not_found"] = True
 
@@ -150,7 +154,10 @@ class GraphResultView(View):
                 x = []
                 y = []
                 for result in test.results.all():
-                    x.append(result.time_run.strftime("%y-%m-%d %T"))
+                    local_tz = pytz.timezone(getattr(settings, "TIMEZONE", "America/Chicago"))
+
+                    time = result.time_run.astimezone(local_tz)
+                    x.append(time.strftime("%y-%m-%d %T"))
                     y.append(result.color_match.unit_value)
 
                 plot = plot_graph(x, y, test.name)
