@@ -1,7 +1,7 @@
-from math import sqrt
-
 from django.db import models
 from django.conf import settings
+from WIMPsite.color_match import get_delta_e
+
 
 # Create your models here.
 
@@ -92,14 +92,17 @@ class TestResult(models.Model):
     def get_color_match(chemical_test_id, r, g, b):
         test = ChemicalTest.objects.get(pk=chemical_test_id)
 
-        min_distance = 1000
+        min_distance = None
         color_match = None
 
         for color in test.colors.all():
             rgb = color.shifted_color
-            distance = sqrt((rgb[0] - r) ** 2 + (rgb[1] - g) ** 2 + (rgb[2] - b) ** 2)
+            distance = get_delta_e(rgb, (r, g, b))
 
-            if distance < min_distance:
+            if min_distance is None:
+                min_distance = distance
+                color_match = color
+            elif distance < min_distance:
                 min_distance = distance
                 color_match = color
 
