@@ -26,10 +26,5 @@
 
         </tbody>
     </table>
-    <form action="{% url 'Test Info' test.id %}" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input class="btn btn-primary" type="submit" value="Add Color">
-    </form>
 
 {% endblock %}

@@ -12,3 +12,4 @@ def get_delta_e(color1, color2):
     color2_lab = convert_color(color2_rgb, LabColor)
 
     return delta_e_cie2000(color1_lab, color2_lab)
+
