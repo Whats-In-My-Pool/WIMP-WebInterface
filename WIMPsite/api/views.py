@@ -33,7 +33,7 @@ class TestAPI(View):
         if action == "report_test":
             if "scheduled_test_pk" in body:
                 test_run = ScheduledTest.objects.get(pk=body["scheduled_test_pk"])
-                date = datetime.datetime.fromtimestamp(body["time_stamp"])
+                date = datetime.datetime.now()
                 test_run.last_run = date
                 test_run.save()
 
