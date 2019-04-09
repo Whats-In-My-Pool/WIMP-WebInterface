@@ -27,6 +27,7 @@ class ChemicalTest(models.Model):
     name = models.CharField(max_length=100)
     unit = models.CharField(max_length=30)
     test = models.ForeignKey(TestStrip, related_name='tests', on_delete=models.CASCADE)
+    invert_color_match = models.BooleanField(default=False)
     test_number = models.IntegerField()
 
     def __str__(self):
@@ -102,9 +103,14 @@ class TestResult(models.Model):
             if min_distance is None:
                 min_distance = distance
                 color_match = color
-            elif distance < min_distance:
-                min_distance = distance
-                color_match = color
+            if test.invert_color_match:
+                if distance > min_distance:
+                    min_distance = distance
+                    color_match = color
+            else:
+                if distance < min_distance:
+                    min_distance = distance
+                    color_match = color
 
         return color_match
 

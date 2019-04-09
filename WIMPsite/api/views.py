@@ -2,7 +2,6 @@ from django.views.generic import View
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from WIMPsite.models import *
-import pytz
 import datetime
 
 import json
