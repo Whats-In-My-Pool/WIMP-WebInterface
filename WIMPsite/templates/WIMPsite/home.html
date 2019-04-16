@@ -10,6 +10,8 @@
             <tr class="table-primary">
                 <th>Test</th>
                 <th>Color</th>
+                {% if DEBUG %}
+                    <th>Actual Color</th> {% endif %}
                 <th>Value</th>
                 <th>Description</th>
             </tr>
@@ -21,6 +23,12 @@
                     <td>
                         <div class="btn" style="background: {{ result.color_match.html_color }}"></div>
                     </td>
+                    {% if DEBUG %}
+                        <td>
+                            <div class="btn" style="background: {{ result.html_color }}"></div>
+                            {{ result.r }} {{ result.g }} {{ result.b }}
+                        </td>
+                    {% endif %}
                     <td>{{ result.color_match.unit_value }}{{ result.chemical_test.unit }}</td>
                     <td>{{ result.color_match.text }}</td>
                 </tr>

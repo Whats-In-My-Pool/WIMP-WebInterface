@@ -31,6 +31,7 @@ class Home(View):
             local_tz = pytz.timezone(getattr(settings, "TIMEZONE", "America/Chicago"))
             time = time.astimezone(local_tz)
             context["test_run"] = time.strftime("%A %B %d at %_I:%M %p")
+            context["DEBUG"] = getattr(settings, "DEBUG", False)
         except (AttributeError, TestResult.DoesNotExist):
             context["results_not_found"] = True
 

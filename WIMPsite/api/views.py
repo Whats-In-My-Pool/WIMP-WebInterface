@@ -20,6 +20,16 @@ class TestAPI(View):
                 j = json.loads(serializers.serialize("json", strip.tests.all()))
             else:
                 j = json.loads(serializers.serialize("json", TestStrip.objects.all()))
+        elif action == "get_colors":
+            strip = TestStrip.objects.get(pk=get["pk"])
+
+            j = {"tests": []}
+            for test in strip.tests.all():
+                test_json = {}
+                test_json["name"] = test.name
+                test_json["colors"] = json.loads(serializers.serialize("json", test.colors.all()))
+
+                j["tests"].append(test_json)
         else:
             j = {"error": "{} not found".format(action)}
 

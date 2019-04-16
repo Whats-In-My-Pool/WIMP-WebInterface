@@ -89,6 +89,14 @@ class TestResult(models.Model):
     g = models.IntegerField()
     b = models.IntegerField()
 
+    @property
+    def html_color(self):
+        r = format(self.r, "x")
+        g = format(self.g, "x")
+        b = format(self.b, "x")
+
+        return "#{}{}{}".format(r, g, b)
+
     @staticmethod
     def get_color_match(chemical_test_id, r, g, b):
         test = ChemicalTest.objects.get(pk=chemical_test_id)
