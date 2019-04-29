@@ -51,9 +51,8 @@ class TestAPI(View):
                     r = result["r"]
                     g = result["g"]
                     b = result["b"]
-                    color_match = TestResult.get_color_match(chemical_test_pk, r, g, b)
 
-                    TestResult.objects.create(chemical_test_id=chemical_test_pk, r=r, g=g, b=b, color_match=color_match,
+                    TestResult.objects.create(chemical_test_id=chemical_test_pk, r=r, g=g, b=b,
                                               time_run=test_run.last_run)
 
                 return HttpResponse("Success")

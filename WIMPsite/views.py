@@ -159,7 +159,7 @@ class GraphResultView(View):
 
                     time = result.time_run.astimezone(local_tz)
                     x.append(time.strftime("%y-%m-%d %T"))
-                    y.append(result.color_match.unit_value)
+                    y.append(result.get_color_match[0][0].unit_value)
 
                 plot = plot_graph(x, y, test.name)
 

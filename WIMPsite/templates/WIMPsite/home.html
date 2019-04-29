@@ -12,25 +12,41 @@
                 <th>Color</th>
                 {% if DEBUG %}
                     <th>Actual Color</th> {% endif %}
-                <th>Value</th>
                 <th>Description</th>
+                <th>Value</th>
             </tr>
             </thead>
             <tbody>
             {% for result in results %}
+
                 <tr class="table-secondary">
+                    {% if not result.get_top_matches.1 %}
                     <td>{{ result.chemical_test.name }}</td>
                     <td>
-                        <div class="btn" style="background: {{ result.color_match.html_color }}"></div>
+                        <div class="btn" style="background: {{ result.get_top_matches.0.html_color }}"></div>
                     </td>
                     {% if DEBUG %}
                         <td>
                             <div class="btn" style="background: {{ result.html_color }}"></div>
-                            {{ result.r }} {{ result.g }} {{ result.b }}
                         </td>
                     {% endif %}
-                    <td>{{ result.color_match.unit_value }}{{ result.chemical_test.unit }}</td>
-                    <td>{{ result.color_match.text }}</td>
+                        <td>{{ result.get_top_matches.0.text }}</td>
+                        <td>{{ result.get_top_matches.0.unit_value }}{{ result.chemical_test.unit }}</td>
+                    {% else %}
+                        <td>{{ result.chemical_test.name }}</td>
+                        <td>
+                            <div class="btn" style="background: {{ result.get_top_matches.0.html_color }}"></div>
+                            -
+                            <div class="btn" style="background: {{ result.get_top_matches.1.html_color }}"></div>
+                        </td>
+                        {% if DEBUG %}
+                            <td>
+                                <div class="btn" style="background: {{ result.html_color }}"></div>
+                            </td>
+                        {% endif %}
+                        <td>{{ result.get_top_matches.0.text }} - {{ result.get_top_matches.1.text }}</td>
+                        <td>{{ result.get_top_matches.0.unit_value }}{{ result.chemical_test.unit }}</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
 

@@ -53,6 +53,10 @@ class Color(models.Model):
         return "#{}{}{}".format(r, g, b)
 
     @property
+    def rgb(self):
+        return self.r, self.b, self.g
+
+    @property
     def shifted_color(self):
         shift = getattr(settings, "COLOR_SHIFT", (0, 0, 0))
 
@@ -82,12 +86,25 @@ class ScheduledTest(models.Model):
 
 class TestResult(models.Model):
     chemical_test = models.ForeignKey(ChemicalTest, related_name="results", on_delete=models.PROTECT)
-    color_match = models.ForeignKey(Color, related_name="results", on_delete=models.PROTECT)
     time_run = models.DateTimeField()
 
     r = models.IntegerField()
     g = models.IntegerField()
     b = models.IntegerField()
+
+    @property
+    def rgb(self):
+        return self.r, self.b, self.g
+
+    @property
+    def get_top_matches(self):
+        color_matches = self.get_color_match
+        error = abs((color_matches[0][1] - color_matches[1][1]) / color_matches[0][1])
+
+        if error < 0.25:
+            return color_matches[0][0], color_matches[1][0]
+        else:
+            return color_matches[0][0], None
 
     @property
     def html_color(self):
@@ -97,30 +114,19 @@ class TestResult(models.Model):
 
         return "#{}{}{}".format(r, g, b)
 
-    @staticmethod
-    def get_color_match(chemical_test_id, r, g, b):
-        test = ChemicalTest.objects.get(pk=chemical_test_id)
+    @property
+    def get_color_match(self):
+        color_list = []
 
-        min_distance = None
-        color_match = None
-
-        for color in test.colors.all():
+        for color in self.chemical_test.colors.all():
             rgb = color.shifted_color
-            distance = get_delta_e(rgb, (r, g, b))
+            distance = get_delta_e(rgb, (self.r, self.g, self.b))
 
-            if min_distance is None:
-                min_distance = distance
-                color_match = color
-            if test.invert_color_match:
-                if distance > min_distance:
-                    min_distance = distance
-                    color_match = color
-            else:
-                if distance < min_distance:
-                    min_distance = distance
-                    color_match = color
+            color_list.append((color, distance))
 
-        return color_match
+        color_list.sort(key=lambda tup: tup[1])
+
+        return color_list
 
 
 class TempResult(models.Model):
