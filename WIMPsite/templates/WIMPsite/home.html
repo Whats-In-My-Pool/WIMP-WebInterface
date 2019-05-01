@@ -44,8 +44,16 @@
                                 <div class="btn" style="background: {{ result.html_color }}"></div>
                             </td>
                         {% endif %}
-                        <td>{{ result.get_top_matches.0.text }} - {{ result.get_top_matches.1.text }}</td>
-                        <td>{{ result.get_top_matches.0.unit_value }}{{ result.chemical_test.unit }}</td>
+
+                        {% if result.get_top_matches.0.unit_value < result.get_top_matches.1.unit_value %}
+                            <td>{{ result.get_top_matches.0.text }} - {{ result.get_top_matches.1.text }}</td>
+                            <td>{{ result.get_top_matches.0.unit_value }}{{ result.chemical_test.unit }} -
+                                {{ result.get_top_matches.1.unit_value }}{{ result.chemical_test.unit }} </td>
+                        {% else %}
+                            <td>{{ result.get_top_matches.1.text }} - {{ result.get_top_matches.0.text }}</td>
+                            <td>{{ result.get_top_matches.1.unit_value }}{{ result.chemical_test.unit }} -
+                                {{ result.get_top_matches.0.unit_value }}{{ result.chemical_test.unit }} </td>
+                        {% endif %}
                     {% endif %}
                 </tr>
             {% endfor %}

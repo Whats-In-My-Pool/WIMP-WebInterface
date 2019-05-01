@@ -30,6 +30,19 @@ class TestAPI(View):
                 test_json["colors"] = json.loads(serializers.serialize("json", test.colors.all()))
 
                 j["tests"].append(test_json)
+        elif action == "result":
+            latest_test = ScheduledTest.objects.filter(current_test=True).latest('last_run')
+
+            results = []
+
+            for test in latest_test.test_strip.tests.all():
+                result = test.results.latest('time_run')
+
+                results.append({"color": result.rgb, "text": result.get_color_match[0][0].text})
+
+            j = results
+
+
         else:
             j = {"error": "{} not found".format(action)}
 
